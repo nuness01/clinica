@@ -22,7 +22,7 @@ const add = (
   age: number,
   gender: string,
   adress: string,
-  contact: string
+  contact: number
 ) =>
   prisma.patient.create({
     data: {
