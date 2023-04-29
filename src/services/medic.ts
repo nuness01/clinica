@@ -17,14 +17,15 @@ const detail = (id: string) =>
     },
   });
 
-const add = (
-  name: string,
-  specialty: string
-) =>
+const add = (name: string, specialtyName: string) =>
   prisma.medic.create({
     data: {
       name,
-      specialty,
+      specialty: {
+        create: {
+          specialtyName,
+        },
+      },
     },
   });
 

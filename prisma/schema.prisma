@@ -10,28 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Patient {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
-  age       Int
-  gender    String   @db.VarChar(255)
-  adress    String   @db.VarChar(255)
-  contact   Int
-  deleted   Boolean  @default(false)
-  orders    Order[]
-}
-
-model Medic {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
-  specialty String   @db.VarChar(255)
-  deleted   Boolean  @default(false)
-}
-
 model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -51,6 +29,38 @@ model Profile {
   lastName  String?  @db.VarChar(255)
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Patient {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.VarChar(255)
+  age       Int
+  gender    String   @db.VarChar(255)
+  adress    String   @db.VarChar(255)
+  contact   Int
+  deleted   Boolean  @default(false)
+  orders    Order[]
+}
+
+model Specialty {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  specialtyName String   @db.VarChar(255)
+  medic         Medic[]
+  deleted       Boolean  @default(false)
+}
+
+model Medic {
+  id          String     @id @default(uuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  name        String     @db.VarChar(255)
+  specialty   Specialty? @relation(fields: [specialtyId], references: [id])
+  specialtyId String?
+  deleted     Boolean    @default(false)
 }
 
 model Order {
