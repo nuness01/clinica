@@ -18,7 +18,6 @@ model User {
   password  String   @db.VarChar(255)
   deleted   Boolean  @default(false)
   profile   Profile?
-  Order     Order[]
 }
 
 model Profile {
@@ -27,21 +26,21 @@ model Profile {
   updatedAt DateTime @updatedAt
   firstName String   @db.VarChar(255)
   lastName  String?  @db.VarChar(255)
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?  @unique
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Patient {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String    @db.VarChar(255)
   age       Int
-  gender    String   @db.VarChar(255)
-  adress    String   @db.VarChar(255)
+  gender    String    @db.VarChar(255)
+  adress    String    @db.VarChar(255)
   contact   Int
-  deleted   Boolean  @default(false)
-  orders    Order[]
+  deleted   Boolean   @default(false)
+  consult   Consult[]
 }
 
 model Specialty {
@@ -53,22 +52,25 @@ model Specialty {
   deleted       Boolean  @default(false)
 }
 
-model Medic {
-  id          String     @id @default(uuid())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  name        String     @db.VarChar(255)
-  specialty   Specialty? @relation(fields: [specialtyId], references: [id])
-  specialtyId String?
-  deleted     Boolean    @default(false)
+model Consult {
+  id        String   @id @default(uuid())
+  date      DateTime @default(now())
+  room      String
+  desc      String?  @db.VarChar(255)
+  medic     Medic?   @relation(fields: [medicId], references: [id])
+  medicId   String?
+  Patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
+  deleted   Boolean  @default(false)
 }
 
-model Order {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deleted   Boolean   @default(false)
-  patient   Patient[]
-  userId    String
-  user      User      @relation(fields: [userId], references: [id])
+model Medic {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String    @db.VarChar(255)
+  specialty   Specialty @relation(fields: [specialtyId], references: [id])
+  specialtyId String
+  Consult     Consult[]
+  deleted     Boolean   @default(false)
 }

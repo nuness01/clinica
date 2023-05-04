@@ -3,6 +3,7 @@ import authRoutes from "./auth";
 import patientsRoutes from "./patients";
 import medicsRoutes from "./medic";
 import specialtyRoutes from "./specialty";
+import consultRoutes from "./consult";
 import { name, version } from "../../package.json";
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router.use("/auth", authRoutes);
 router.use("/patients", patientsRoutes);
 router.use("/medics", medicsRoutes);
 router.use("/specialty", specialtyRoutes);
+router.use("/consult", consultRoutes);
 
 export default router;
