@@ -17,25 +17,42 @@ const detail = (id: string) =>
     },
   });
 
-const add = (room: string, desc: string, medicId: string, patientId: string) =>
-  prisma.consult.create({
+const add = async (
+  room: string,
+  desc: string,
+  medicid: string,
+  patientid: string
+) => {
+  return prisma.consult.create({
     data: {
       room,
       desc,
-
       medic: {
         connect: {
-          id: medicId,
+          id: medicid,
         },
       },
       Patient: {
         connect: {
-          id: patientId,
+          id: patientid,
         },
       },
       deleted: false,
     },
+    include: {
+      medic: {
+        select: {
+          name: true,
+        },
+      },
+      Patient: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
+};
 
 const update = (id: string, consult: Consult) =>
   prisma.consult.update({
